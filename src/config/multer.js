@@ -7,20 +7,20 @@ module.exports = {
     dest: path.resolve(__dirname,'..','..','tmp','uploads'),
     storage: multer.diskStorage({
         destination: (req, file, callback) => {
-            callback(null, __dirname,'..','..','tmp','uploads')
+            callback(null, path.resolve(__dirname,'..','..','tmp','uploads'));
         },
         filename: (req, file, callback) => {
             crypto.randomBytes(16, (err, hash) => {
                 if (err) callback(err);
                 
-                const fileName = `${hash.toString('hex')}-${file.orinalName}`;
+                const fileName = `${hash.toString('hex')}-${file.orinalname}`;
                 
-                callback(null,fileName)
-            })
+                callback(null,fileName);
+            });
         },
     }),
     limists: {
-        fileSize: 2 * (1024*2) 
+        fileSize: 2 * 1024 + 1024
     },
     fileFilter: (req, file, callback)=> {
         const allowedMimes = [
@@ -32,7 +32,7 @@ module.exports = {
         if (allowedMimes.includes(file.mimetype)) {
             callback(null,true);
         } else {
-            callback(new Error('Invalid file type'))
+            callback(new Error('Invalid file type'));
         }
     }
 };
